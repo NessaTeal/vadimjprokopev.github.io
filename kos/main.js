@@ -1,5 +1,13 @@
-var frequencies = [587.33, 659.26, 698.46, 783.99, 880, 987.77]
-var used = [587.33, 698.46]
+var d = 587.33;
+var b = 987.77;
+var a = 880;
+var g = 783.99;
+var f = 739.99;
+var c = 1046.50;
+var e = 659.26;
+
+var notesInOrder = [d, b, a, g, d,   d, d, d, b, a, g, e, e, c, b, a, f];
+var lastsInOrder = [4, 4, 4, 4, 1.5, 8, 8, 4, 4, 4, 4, 1, 4, 4, 4, 4, 1];
 
 var audioCtx = new window.AudioContext;
 
@@ -13,36 +21,30 @@ gainNode.gain.value = 0.017;
 gainNode.connect(audioCtx.destination);
 
 oscillator.connect(gainNode);
-oscillator2.connect(gainNode);
-oscillator3.connect(gainNode);
 
-oscillator.frequency.value = 523.25;
-oscillator2.frequency.value = 587.33;
-oscillator3.frequency.value = 698.46;
+oscillator.frequency.value = 0;
 
 oscillator.start();
-oscillator2.start();
-oscillator3.start();
 
-setInterval(changeNote, 900);
+var i = 0;
+
+changeNote();
+
+//var
 
 function changeNote() {
 	
-	var newNote;
-	do {
-		newNote = Math.round(Math.random() * 5);
-	} while(frequencies[newNote] == used[0] || frequencies[newNote] == used[1])
+	gainNode.gain.value = 0.027;
 
-	if(Math.random() < 0.5) {
-		oscillator2.frequency.value = frequencies[newNote];
-		used[0] = frequencies[newNote];
-	}
-	else {
-		oscillator3.frequency.value = frequencies[newNote];
-		used[1] = frequencies[newNote];
-	}
+	var note = notesInOrder[i];
+	var last = lastsInOrder[i];
+	i++;
 
+	oscillator.frequency.value = note;
+	setTimeout(changeNote, 1400 / last)
 }
+
+//function 
 // // var ans;
 
 // function calc() {
