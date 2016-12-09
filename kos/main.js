@@ -6,94 +6,45 @@ var f = 739.99;
 var c = 1046.50;
 var e = 659.26;
 
-var notesInOrder = [d, b, a, g, d,   d, d, d, b, a, g, e, e, c, b, a, f];
-var lastsInOrder = [4, 4, 4, 4, 1.5, 8, 8, 4, 4, 4, 4, 1, 4, 4, 4, 4, 1];
+var notesInOrder = [d, b, a, g, d,   d, d, d, b, a, g, e, e, c, b, a, f, d, d, d, a, b, d, b, a, g, d, d, b, a, g, e,   e, e, c, b, a, d, d, d, d, e, d, c, a, g, b, b, b, b, b, b, b, d, g, a, b, c, c, c, c, c, b, b, b, b, b, a, a, b, a, d, b, b, b, b, b, b, b, d, g, a, b, c, c, c, c, c, b, b, b, b, d, d, c, a, g];
+var lastsInOrder = [4, 4, 4, 4, 1.5, 8, 8, 4, 4, 4, 4, 1, 4, 4, 4, 4, 1, 4, 4, 4, 4, 1, 4, 4, 4, 4, 1, 4, 4, 4, 4, 1.5, 4, 4, 4, 4, 4, 4, 4, 3, 8, 4, 4, 4, 4, 1, 4, 4, 2, 4, 4, 2, 4, 4, 3, 8, 1, 4, 4, 3, 8, 4, 4, 4, 8, 8, 4, 4, 4, 4, 2, 2, 4, 4, 2, 4, 4, 2, 4, 4, 3, 8, 1, 4, 4, 3, 8, 4, 4, 4, 8, 8, 4, 4, 4, 4, 1];
 
 var audioCtx = new window.AudioContext;
 
 var oscillator = audioCtx.createOscillator();
-var oscillator2 = audioCtx.createOscillator();
-var oscillator3 = audioCtx.createOscillator();
 
 var gainNode = audioCtx.createGain();
-gainNode.gain.value = 0.017;
 
 gainNode.connect(audioCtx.destination);
 
 oscillator.connect(gainNode);
 
-oscillator.frequency.value = 0;
-
+oscillator.frequency.value = d;
 oscillator.start();
 
 var i = 0;
 
 changeNote();
 
-//var
+var timer;
 
 function changeNote() {
-	
-	gainNode.gain.value = 0.027;
+	gainNode.gain.value = 0.165;
 
 	var note = notesInOrder[i];
 	var last = lastsInOrder[i];
+	
 	i++;
+	if(i == notesInOrder.length) {
+		i = 0;
+	}
 
 	oscillator.frequency.value = note;
-	setTimeout(changeNote, 1400 / last)
+	setTimeout(changeNote, 1400 / last);
+	
+	setTimeout(makeQuiter, 50);
 }
 
-//function 
-// // var ans;
-
-// function calc() {
-
-// 	var opr = Math.round(Math.random() * 2);
-
-// 	var a = Math.round(Math.random() * 49 + 1);
-// 	var b = Math.round(Math.random() * 49 + 1);
-
-// 	var oprsmb = "";
-
-// 	if(opr == 0) {
-// 		ans = a + b;
-// 		oprsmb = "+";
-// 	}
-// 	else if(opr == 1) {
-// 		ans = a - b;
-// 		oprsmb = "-";
-// 	}
-// 	else {
-// 		if(a > 25) {
-// 			a = 50 - a;
-// 		}
-// 		if (b > 25) {
-// 			b = 50 - 25;
-// 		}
-// 		ans = a * b;
-// 		oprsmb = "*";
-// 	}
-
-// 		document.getElementById("text").innerHTML = a + " " + oprsmb + " " + b + " = ";
-// }
-
-// function click1() {
-// 	if(document.getElementById("answer").value == ans) {
-// 		document.getElementById("result").innerHTML = "correct";
-// 		calc();
-// 	}
-// 	else {
-// 		document.getElementById("result").innerHTML = "incorrect";
-// 	}
-// 	document.getElementById("answer").value = "";
-// }
-
-// 	calc()
-// 	document.getElementById("answer")
-// 	.addEventListener("keyup", function(event) {
-// 	    event.preventDefault();
-// 	    if (event.keyCode == 13) {
-// 	        document.getElementById("check").click();
-//     	}});
-// 	}
+function makeQuiter() {
+	gainNode.gain.value = 0.040;
+}
