@@ -1,13 +1,15 @@
-var d = 587.33;
-var b = 987.77;
-var a = 880;
-var g = 783.99;
-var f = 739.99;
-var c = 1046.50;
-var e = 659.26;
+var d0 = 587.33;
+var e0 = 659.26;
+var f0 = 739.99;
+var g0 = 783.99;
+var a0 = 880;
+var b0 = 987.77;
+var c0 = 1046.50;
+var d1 = d0 * 2;
+var e1 = e0 * 2;
 
-var notesInOrder = [d, b, a, g, d,   d, d, d, b, a, g, e, e, c, b, a, f, d, d, d, a, b, d, b, a, g, d, d, b, a, g, e,   e, e, c, b, a, d, d, d, d, e, d, c, a, g, b, b, b, b, b, b, b, d, g, a, b, c, c, c, c, c, b, b, b, b, b, a, a, b, a, d, b, b, b, b, b, b, b, d, g, a, b, c, c, c, c, c, b, b, b, b, d, d, c, a, g];
-var lastsInOrder = [4, 4, 4, 4, 1.5, 8, 8, 4, 4, 4, 4, 1, 4, 4, 4, 4, 1, 4, 4, 4, 4, 1, 4, 4, 4, 4, 1, 4, 4, 4, 4, 1.5, 4, 4, 4, 4, 4, 4, 4, 3, 8, 4, 4, 4, 4, 1, 4, 4, 2, 4, 4, 2, 4, 4, 3, 8, 1, 4, 4, 3, 8, 4, 4, 4, 8, 8, 4, 4, 4, 4, 2, 2, 4, 4, 2, 4, 4, 2, 4, 4, 3, 8, 1, 4, 4, 3, 8, 4, 4, 4, 8, 8, 4, 4, 4, 4, 1];
+var notesInOrder = [d0, b0, a0, g0, d0,  d0, d0, d0, b0, a0, g0, e0, e0, c0, b0, a0, f0, d1, d1, c0, a0, b0, d0, b0, a0, g0, d0, d0, b0, a0, g0, e0,  e0, e0, c0, b0, a0, d1, d1, d1, d1, e1, d1, c0, a0, g0, b0, b0, b0, b0, b0, b0, b0, d1, g0, a0, b0, c0, c0, c0, c0, c0, b0, b0, b0, b0, b0, a0, a0, b0, a0, d1, b0, b0, b0, b0, b0, b0, b0, d1, g0, a0, b0, c0, c0, c0, c0, c0, b0, b0, b0, b0, d1, d1, c0, a0, g0];
+var lastsInOrder = [4,  4,  4,  4,  1.5, 8,  8,  4,  4,  4,  4,  1,  4,  4,  4,  4,  1,  4,  4,  4,  4,  1,  4,  4,  4,  4,  1,  4,  4,  4,  4,  1.5, 4,  4,  4,  4,  4,  4,  4,  3,  8,  4,  4,  4,  4,  1,  4,  4,  2,  4,  4,  2,  4,  4,  3,  8,  1,  4,  4,  3,  8,  4,  4,  4,  8,  8,  4,  4,  4,  4,  2,  2,  4,  4,  2,  4,  4,  2,  4,  4,  3,  8,  1,  4,  4,  3,  8,  4,  4,  4,  8,  8,  4,  4,  4,  4,  1];
 
 var audioCtx = new window.AudioContext;
 
@@ -19,7 +21,7 @@ gainNode.connect(audioCtx.destination);
 
 oscillator.connect(gainNode);
 
-oscillator.frequency.value = d;
+oscillator.frequency.value = d0;
 oscillator.start();
 
 var i = 0;
