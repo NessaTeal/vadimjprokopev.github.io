@@ -8,8 +8,8 @@ var c1 = 1046.50;
 var d1 = d0 * 2;
 var e1 = e0 * 2;
 
-var notesInOrder = [d0, b0, a0, g0, d0,  d0, d0, d0, b0, a0, g0, e0, e0, c1, b0, a0, f0, d1, d1, c1, a0, b0, d0, b0, a0, g0, d0, d0, b0, a0, g0, e0,  e0, e0, c1, b0, a0, d1, d1, d1, d1, e1, d1, c1, a0, g0, b0, b0, b0, b0, b0, b0, b0, d1, g0, a0, b0, c1, c1, c1, c1, c1, b0, b0, b0, b0, b0, a0, a0, b0, a0, d1, b0, b0, b0, b0, b0, b0, b0, d1, g0, a0, b0, c1, c1, c1, c1, c1, b0, b0, b0, b0, d1, d1, c1, a0, g0];
-var lastsInOrder = [4,  4,  4,  4,  1.5, 8,  8,  4,  4,  4,  4,  1,  4,  4,  4,  4,  1,  4,  4,  4,  4,  1,  4,  4,  4,  4,  1,  4,  4,  4,  4,  1.5, 4,  4,  4,  4,  4,  4,  4,  3,  8,  4,  4,  4,  4,  1,  4,  4,  2,  4,  4,  2,  4,  4,  3,  8,  1,  4,  4,  3,  8,  4,  4,  4,  8,  8,  4,  4,  4,  4,  2,  2,  4,  4,  2,  4,  4,  2,  4,  4,  3,  8,  1,  4,  4,  3,  8,  4,  4,  4,  8,  8,  4,  4,  4,  4,  1];
+var notesInOrder = [d0, b0, a0, g0, d0,  d0, d0, d0, b0, a0, g0, e0, e0, c1, b0, a0, f0, d1, d1, c1, a0, b0, d0, b0, a0, g0, d0, d0, b0, a0, g0, e0,  e0, e0, c1, b0, a0, d1, d1, d1,   d1, e1, d1, c1, a0, g0, b0, b0, b0, b0, b0, b0, b0, d1, g0,   a0, b0, c1, c1, c1, c1, c1, b0, b0, b0, b0, b0, a0, a0, b0, a0, d1, b0, b0, b0, b0, b0, b0, b0, d1, g0,   a0, b0, c1, c1, c1,   c1, c1, b0, b0, b0, b0, d1, d1, c1, a0, g0];
+var lastsInOrder = [4,  4,  4,  4,  1.5, 8,  8,  4,  4,  4,  4,  1,  4,  4,  4,  4,  1,  4,  4,  4,  4,  1,  4,  4,  4,  4,  1,  4,  4,  4,  4,  1.5, 4,  4,  4,  4,  4,  4,  4,  8/3,  8,  4,  4,  4,  4,  1,  4,  4,  2,  4,  4,  2,  4,  4,  8/3,  8,  1,  4,  4,  3,  8,  4,  4,  4,  8,  8,  4,  4,  4,  4,  2,  2,  4,  4,  2,  4,  4,  2,  4,  4,  8/3,  8,  1,  4,  4,  8/3,  8,  4,  4,  4,  8,  8,  4,  4,  4,  4,  1];
 
 var audioCtx = new window.AudioContext;
 
@@ -51,7 +51,7 @@ function changeNote() {
 }
 
 function makeQuiter() {
-	gainNode.gain.value = 0.040;
+	gainNode.gain.value = 0.12;
 }
 
 function karaoke_init() {

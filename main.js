@@ -1,5 +1,5 @@
-var frequencies = [587.33, 659.26, 698.46, 783.99, 880, 987.77]
-var used = [587.33, 698.46]
+var frequencies = [523.25/2, 587.33/2, 659.26/2, 698.46/2, 783.99/2, 880/2, 987.77/2, 523.25, 587.33, 659.26, 698.46, 783.99, 880, 987.77];
+var indexes = [7, 8, 10];
 
 var audioCtx = new window.AudioContext;
 
@@ -28,18 +28,75 @@ setInterval(changeNote, 900);
 
 function changeNote() {
 	
-	var newNote;
-	do {
-		newNote = Math.round(Math.random() * 5);
-	} while(frequencies[newNote] == used[0] || frequencies[newNote] == used[1])
+	var choice = Math.random();
 
-	if(Math.random() < 0.5) {
-		oscillator2.frequency.value = frequencies[newNote];
-		used[0] = frequencies[newNote];
+	if(choice < 0.33) {
+		if(indexes[0] == 0) {
+			if(indexes[1] != 1) {
+				oscillator.frequency.value = frequencies[1];
+				indexes[0] = 1;
+			}
+			else {
+				changeNote();
+			}
+		}
+		else if(indexes[1] - 1 != indexes[0]) {
+			var direction = Math.random();
+			if(direction < 0.5) {
+				indexes[0]++;
+			}
+			else {
+				indexes[0]--;
+			}
+			oscillator.frequency.value = frequencies[indexes[0]];
+		}
+	}
+	else if(choice < 0.66) {
+		if(indexes[1] - 1 == indexes[0]) {
+
+			if(indexes[1] + 1 == indexes[2]) {
+				changeNote();
+			}
+
+			indexes[1]++;
+			oscillator2.frequency.value = frequencies[indexes[1]];
+		}
+		else if(indexes[1] + 1 == indexes[2]) {
+			indexes[1]--;
+			oscillator2.frequency.value = frequencies[indexes[1]];
+		}
+		else {
+			var direction = Math.random();
+
+			if(direction < 0.5) {
+				indexes[1]++;
+			}
+			else {
+				indexes[1]--;
+			}
+			oscillator2.frequency.value = frequencies[indexes[1]];
+		}
 	}
 	else {
-		oscillator3.frequency.value = frequencies[newNote];
-		used[1] = frequencies[newNote];
+		if(indexes[2] == 13) {
+			if(indexes[1] != 12) {
+				oscillator3.frequency.value = frequencies[12];
+				indexes[2] = 12;
+			}
+			else {
+				changeNote();
+			}
+		}
+		else if(indexes[1] + 1 != indexes[2]) {
+			var direction = Math.random();
+			if(direction < 0.5) {
+				indexes[2]++;
+			}
+			else {
+				indexes[2]--;
+			}
+			oscillator3.frequency.value = frequencies[indexes[2]];
+		}
 	}
 
 }
