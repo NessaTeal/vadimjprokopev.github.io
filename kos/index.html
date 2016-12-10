@@ -1,14 +1,14 @@
 <html>
 <head>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<style>
+		.karaokeFloater { width: 50px; height: 25px; float: left; }
+		.karaokeRed { color: red; }
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.6/jquery.min.js"></script>
 	<script src="main.js"></script>
 </head>
-<body>
-	<div>
-		<div id="text"></div>
-		<input id="answer" type="text">
-		<button id="check" onclick="click1()">Check</button>
-		<div id="result"></div>
+<body onload="karaoke_init()">
+	<div id="karaoke">
 	</div>
 </body>
 </html>
