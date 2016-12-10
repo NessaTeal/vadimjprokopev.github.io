@@ -51,9 +51,6 @@ function changeNote() {
 }
 
 function makeQuiter() {
-<<<<<<< HEAD
-	gainNode.gain.value = 0.060;
-=======
 	gainNode.gain.value = 0.040;
 }
 
@@ -94,5 +91,4 @@ function karaoke_highlight(i) {
 	if (element != null) {
 		element.classList.add('karaokeRed');
 	}
->>>>>>> origin/master
 }
