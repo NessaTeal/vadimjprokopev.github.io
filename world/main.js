@@ -29,12 +29,12 @@ function update() {
 	ctx1.moveTo(0, 200);
 
 	for(var i = 0; i < 1000; i++) {
-		ctx1.lineTo(i, 75 * Math.sin(i * Math.PI + phase) + 75 * Math.sin(i * Math.PI * 0.99 + phase) + 200);
+		ctx1.lineTo(i, 75 * Math.sin(i * Math.PI / 3 + phase) + 75 * Math.sin(i * Math.PI * 0.99 / 3 + phase) + 200);
 	}
 
 	ctx1.stroke();
 
-	phase += Math.PI / 6;
+	phase += Math.PI / 24;
 
 	// ctx2.moveTo(0, 200);
 
