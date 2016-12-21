@@ -1,58 +1,121 @@
-var canvas1;
-var ctx1;
-var phase = 0;
+var canvas;
+var ctx;
 
-// var canvas2; = document.getElementById("canvas2");
-// var ctx2; = canvas2.getContext("2d");
+var field = [];
 
-// var canvas3; = document.getElementById("canvas3");
-// var ctx3; = canvas3.getContext("2d");
+var FIELD_LENGTH = 1000;
+var FIELD_HEIGHT = 700;
+var CELL_SIZE = 20;
+var SWAMPS_AMOUNT = 800;
+var GAME_SPEED = 300;
 
+var swamps = [];
+
+var man = {};
+
+var seed = {};
 
 $(document).ready(function() {
+	for(var x = 0; x < FIELD_LENGTH / CELL_SIZE; x++) {
+		field[x] = [];
+		for(var y = 0; y < FIELD_HEIGHT / CELL_SIZE; y++) {
+			field[x][y] = {x:x, y:y, cost:1};
+		}
+	}
 
-	canvas1 = document.getElementById("canvas1");
-	ctx1 = canvas1.getContext("2d");
+	man = new man(20, 20);
 
-	// var canvas2 = document.getElementById("canvas2");
-	// var ctx2 = canvas2.getContext("2d");
+	spawnNewSeed();
 
-	// var canvas3 = document.getElementById("canvas3");
-	// var ctx3 = canvas3.getContext("2d");
-	setInterval(update, 100);
+	spawnSwamps();
+
+	canvas = document.getElementById("canvas");
+	canvas.width = FIELD_LENGTH;
+	canvas.height = FIELD_HEIGHT;
+
+	ctx = canvas.getContext("2d");
+
+	man.findPath(seed);
+
+	setInterval(update, GAME_SPEED);
 });
 
 function update() {
 
-	canvas1.width = canvas1.width;
+	man.move();
 
-	ctx1.moveTo(0, 200);
-
-	for(var i = 0; i < 1000; i++) {
-		ctx1.lineTo(i, 75 * Math.sin(i * Math.PI / 3 + phase) + 75 * Math.sin(i * Math.PI * 0.99 / 3 + phase) + 200);
+	if(man.x == seed.x && man.y == seed.y) {
+		spawnNewSeed();
+		man.findPath(seed);
 	}
 
-	ctx1.stroke();
+	canvas.width = canvas.width;
 
-	phase += Math.PI / 24;
+	drawSwamps();
+	drawSeed();
+	drawMan();
+}
 
-	// ctx2.moveTo(0, 200);
+function drawMan() {
+	var x = man.x * CELL_SIZE;
+	var y = man.y * CELL_SIZE;
 
-	// for(var i = 0; i < 1000; i++) {
-	// 	ctx2.lineTo(i, 75 * Math.sin(i * Math.PI / 20) + 200);
-	// }
+	ctx.fillStyle = "#FACE8D";
 
-	// ctx2.strokeStyle="#00ff00";
+	ctx.fillRect(x,y,CELL_SIZE,CELL_SIZE);
+}
 
-	// ctx2.stroke();
+function drawSeed() {
+	var x = seed.x * CELL_SIZE;
+	var y = seed.y * CELL_SIZE;
 
-	// ctx3.moveTo(0, 200);
+	ctx.fillStyle = "#00CC00";
 
-	// for(var i = 0; i < 1000; i++) {
-	// 	ctx3.lineTo(i, 75 * Math.sin(i * Math.PI / 40) + 200);
-	// }
+	ctx.fillRect(x,y,CELL_SIZE,CELL_SIZE);
+}
 
-	// ctx3.strokeStyle="#ff0000";
+function drawSwamps() {
+	swamps.forEach(function(swamp) {
+		var x = swamp.x * CELL_SIZE;
+		var y = swamp.y * CELL_SIZE;
 
-	// ctx3.stroke();
+		ctx.fillStyle = "#0000FF";
+
+		ctx.fillRect(x,y,CELL_SIZE,CELL_SIZE);
+	});
+}
+
+function spawnNewSeed() {
+	do {
+		seed.x = Math.round(Math.random() * (FIELD_LENGTH / CELL_SIZE - 1));
+		seed.y = Math.round(Math.random() * (FIELD_HEIGHT / CELL_SIZE - 1)); 
+	} while(seed.x == man.x && seed.y == man.y);
+}
+
+function spawnSwamps() {
+	for(var i = 0; i < SWAMPS_AMOUNT; i++) {
+		var swamp = {};
+
+		do {
+			swamp.x = Math.round(Math.random() * (FIELD_LENGTH / CELL_SIZE - 1));
+			swamp.y = Math.round(Math.random() * (FIELD_HEIGHT / CELL_SIZE - 1));
+		} while(swamps.contains(swamp));
+
+		swamps.push(swamp);
+
+
+		console.log(swamp);
+
+		field[swamp.x][swamp.y].cost = 10;
+	}
+}
+
+Array.prototype.contains = function(obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] === obj) {
+            return true;
+        }
+    }
+    return false;
 }
