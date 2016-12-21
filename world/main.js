@@ -11,7 +11,7 @@ var GAME_SPEED = 300;
 
 var swamps = [];
 
-var man = {};
+var man;
 
 var seed = {};
 
