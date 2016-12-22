@@ -3,17 +3,17 @@ var ctx;
 
 var field = [];
 
-var FIELD_LENGTH = 1000;
-var FIELD_HEIGHT = 700;
-var CELL_SIZE = 20;
-var SWAMPS_AMOUNT = 800;
-var GAME_SPEED = 300;
+var FIELD_LENGTH = 1200;
+var FIELD_HEIGHT = 720;
+var CELL_SIZE = 40;
+var SWAMPS_AMOUNT = 500;
+var GAME_SPEED = 200;
 
 var swamps = [];
 
 var man;
 
-var seed = {};
+var seeds = [];
 
 $(document).ready(function() {
 	for(var x = 0; x < FIELD_LENGTH / CELL_SIZE; x++) {
@@ -23,9 +23,11 @@ $(document).ready(function() {
 		}
 	}
 
-	man = new man(20, 20);
+	man = new man(1, 1);
 
-	spawnNewSeed();
+	for(var i = 0; i < 10; i++) {
+		spawnNewSeed();
+	}
 
 	spawnSwamps();
 
@@ -35,7 +37,7 @@ $(document).ready(function() {
 
 	ctx = canvas.getContext("2d");
 
-	man.findPath(seed);
+	man.findPath(seeds);
 
 	setInterval(update, GAME_SPEED);
 });
@@ -44,15 +46,19 @@ function update() {
 
 	man.move();
 
-	if(man.x == seed.x && man.y == seed.y) {
-		spawnNewSeed();
-		man.findPath(seed);
-	}
+	for(var i = 0; i < seeds.length; i++) {
+		if(seeds[i].x == man.x && seeds[i].y == man.y) {
+			seeds.splice(i, 1);
+			spawnNewSeed();
+			man.findPath(seeds);
+			break;
+		}
+	};
 
 	canvas.width = canvas.width;
 
 	drawSwamps();
-	drawSeed();
+	drawSeeds();
 	drawMan();
 }
 
@@ -65,13 +71,15 @@ function drawMan() {
 	ctx.fillRect(x,y,CELL_SIZE,CELL_SIZE);
 }
 
-function drawSeed() {
-	var x = seed.x * CELL_SIZE;
-	var y = seed.y * CELL_SIZE;
+function drawSeeds() {
+	seeds.forEach(function(seed) {
+		var x = seed.x * CELL_SIZE;
+		var y = seed.y * CELL_SIZE;
 
-	ctx.fillStyle = "#00CC00";
+		ctx.fillStyle = "#00CC00";
 
-	ctx.fillRect(x,y,CELL_SIZE,CELL_SIZE);
+		ctx.fillRect(x,y,CELL_SIZE,CELL_SIZE);
+	});
 }
 
 function drawSwamps() {
@@ -86,10 +94,13 @@ function drawSwamps() {
 }
 
 function spawnNewSeed() {
+	var seed = {};
 	do {
 		seed.x = Math.round(Math.random() * (FIELD_LENGTH / CELL_SIZE - 1));
 		seed.y = Math.round(Math.random() * (FIELD_HEIGHT / CELL_SIZE - 1)); 
-	} while(seed.x == man.x && seed.y == man.y);
+	} while((seed.x == man.x && seed.y == man.y) || seeds.contains(seed));
+
+	seeds.push(seed);
 }
 
 function spawnSwamps() {
@@ -102,9 +113,6 @@ function spawnSwamps() {
 		} while(swamps.contains(swamp));
 
 		swamps.push(swamp);
-
-
-		console.log(swamp);
 
 		field[swamp.x][swamp.y].cost = 10;
 	}

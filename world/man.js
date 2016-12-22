@@ -1,78 +1,87 @@
 function man(x,y) {
 	this.x = x;
 	this.y = y;
-	this.path = undefined;
-	this.findPath = function findPath(target) {
+	this.path = [];
+	this.findPath = function findPath(targets) {
 
-		var unvisited = $.extend(true, [], field);
+		var globalMinimumDistance = 200000000;
 
-		unvisited[this.x][this.y].distance = 0;
+		for(var k = 0; k < targets.length; k++) {
+			var unvisited = $.extend(true, [], field);
 
-		var current = unvisited[this.x][this.y];
+			unvisited[this.x][this.y].distance = 0;
 
-		while(current.x != target.x || current.y != target.y) {
+			var current = unvisited[this.x][this.y];
 
-			if(current.y != FIELD_HEIGHT / CELL_SIZE - 1
-				&& (unvisited[current.x][current.y + 1].distance === undefined
-				|| unvisited[current.x][current.y + 1].distance > current.distance + unvisited[current.x][current.y + 1].cost)) {
+			while(current.x != targets[k].x || current.y != targets[k].y) {
 
-				unvisited[current.x][current.y + 1].distance = current.distance + unvisited[current.x][current.y + 1].cost;
-				unvisited[current.x][current.y + 1].previous = current;
-			};
+				if(current.y < FIELD_HEIGHT / CELL_SIZE - 1
+					&& (unvisited[current.x][current.y + 1].distance === undefined
+					|| unvisited[current.x][current.y + 1].distance > current.distance + unvisited[current.x][current.y + 1].cost)) {
 
-			if(current.y != 0
-				&& (unvisited[current.x][current.y - 1].distance === undefined
-				|| unvisited[current.x][current.y - 1].distance > current.distance + unvisited[current.x][current.y - 1].cost)) {
+					unvisited[current.x][current.y + 1].distance = current.distance + unvisited[current.x][current.y + 1].cost;
+					unvisited[current.x][current.y + 1].previous = current;
+				};
 
-				unvisited[current.x][current.y - 1].distance = current.distance + unvisited[current.x][current.y - 1].cost;
-				unvisited[current.x][current.y - 1].previous = current;
-			};
+				if(current.y != 0
+					&& (unvisited[current.x][current.y - 1].distance === undefined
+					|| unvisited[current.x][current.y - 1].distance > current.distance + unvisited[current.x][current.y - 1].cost)) {
 
-			if(current.x != FIELD_LENGTH / CELL_SIZE - 1
-				&& (unvisited[current.x + 1][current.y].distance === undefined
-				|| unvisited[current.x + 1][current.y].distance > current.distance + unvisited[current.x + 1][current.y].cost)) {
+					unvisited[current.x][current.y - 1].distance = current.distance + unvisited[current.x][current.y - 1].cost;
+					unvisited[current.x][current.y - 1].previous = current;
+				};
 
-				unvisited[current.x + 1][current.y].distance = current.distance + unvisited[current.x + 1][current.y].cost;
-				unvisited[current.x + 1][current.y].previous = current;
-			};
+				if(current.x < FIELD_LENGTH / CELL_SIZE - 1
+					&& (unvisited[current.x + 1][current.y].distance === undefined
+					|| unvisited[current.x + 1][current.y].distance > current.distance + unvisited[current.x + 1][current.y].cost)) {
 
-			if(current.x != 0
-				&& (unvisited[current.x - 1][current.y].distance === undefined
-				|| unvisited[current.x - 1][current.y].distance > current.distance + unvisited[current.x - 1][current.y].cost)) {
+					unvisited[current.x + 1][current.y].distance = current.distance + unvisited[current.x + 1][current.y].cost;
+					unvisited[current.x + 1][current.y].previous = current;
+				};
 
-				unvisited[current.x - 1][current.y].distance = current.distance + unvisited[current.x - 1	][current.y].cost;
-				unvisited[current.x - 1][current.y].previous = current;
-			};
+				if(current.x != 0
+					&& (unvisited[current.x - 1][current.y].distance === undefined
+					|| unvisited[current.x - 1][current.y].distance > current.distance + unvisited[current.x - 1][current.y].cost)) {
 
-			current.visited = true;
+					unvisited[current.x - 1][current.y].distance = current.distance + unvisited[current.x - 1	][current.y].cost;
+					unvisited[current.x - 1][current.y].previous = current;
+				};
 
-			var newCur;
-			var smallestDist = 20000;
+				current.visited = true;
 
-			for(var i = 0; i < FIELD_LENGTH / CELL_SIZE; i++) {
-				for(var j = 0; j < FIELD_HEIGHT / CELL_SIZE; j++) {
-					if(unvisited[i][j].visited != true || unvisited[i][j].visited === undefined) {
-						if(unvisited[i][j].distance < smallestDist) {
-							newCur = unvisited[i][j];
-							smallestDist = unvisited[i][j].distance;
+				var newCur;
+				var smallestDist = 200000;
+
+				for(var i = 0; i < FIELD_LENGTH / CELL_SIZE; i++) {
+					for(var j = 0; j < FIELD_HEIGHT / CELL_SIZE; j++) {
+						if(unvisited[i][j].visited != true || unvisited[i][j].visited === undefined) {
+							if(unvisited[i][j].distance < smallestDist) {
+								newCur = unvisited[i][j];
+								smallestDist = unvisited[i][j].distance;
+							}
 						}
 					}
 				}
+
+				current = newCur;
 			}
 
-			current = newCur;
-		}
+			var path = [current];
 
-		var path = [current];
+			if(unvisited[targets[k].x][targets[k].y].distance < globalMinimumDistance) {
 
-		while(current.previous !== undefined) {
-			path.unshift(current.previous);
-			current = current.previous;
-		}
+				globalMinimumDistance = unvisited[targets[k].x][targets[k].y].distance;
 
-		path.splice(0,1);
+				while(current.previous !== undefined) {
+					path.unshift(current.previous);
+					current = current.previous;
+				}
 
-		this.path = path;
+				path.splice(0,1);
+
+				this.path = path;
+			}
+		};
 	}
 
 	this.move = function() {
