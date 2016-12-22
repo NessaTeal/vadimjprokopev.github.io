@@ -9,7 +9,7 @@ function man(x,y) {
 	this.destination = {};
 	this.findPath = function findPath(targets) {
 
-		var globalMinimumDistance = 200000000;
+		var globalMinimumDistance = Number.MAX_SAFE_INTEGER;
 
 		for(var k = 0; k < targets.length; k++) {
 			var unvisited = $.extend(true, [], field);
@@ -55,7 +55,7 @@ function man(x,y) {
 				current.visited = true;
 
 				var newCur;
-				var smallestDist = 200000;
+				var smallestDist = Number.MAX_SAFE_INTEGER;
 
 				for(var i = 0; i < FIELD_LENGTH / CELL_SIZE; i++) {
 					for(var j = 0; j < FIELD_HEIGHT / CELL_SIZE; j++) {
@@ -103,7 +103,7 @@ function man(x,y) {
 				this.moving = true;
 			}
 		}
-		
+
 		this.x += (this.destination.x - this.lastx)/this.destination.cost;
 		this.y += (this.destination.y - this.lasty)/this.destination.cost;
 
