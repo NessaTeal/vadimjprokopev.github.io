@@ -6,8 +6,12 @@ var field = [];
 var FIELD_LENGTH = 1200;
 var FIELD_HEIGHT = 720;
 var CELL_SIZE = 40;
-var SWAMPS_AMOUNT = 500;
-var GAME_SPEED = 200;
+
+var USUAL_FIELD_COST = 10;
+var SWAMP_FIELD_COST = 50;
+
+var SWAMPS_AMOUNT = 270;
+var GAME_SPEED = 15;
 
 var swamps = [];
 
@@ -19,7 +23,7 @@ $(document).ready(function() {
 	for(var x = 0; x < FIELD_LENGTH / CELL_SIZE; x++) {
 		field[x] = [];
 		for(var y = 0; y < FIELD_HEIGHT / CELL_SIZE; y++) {
-			field[x][y] = {x:x, y:y, cost:1};
+			field[x][y] = {x:x, y:y, cost:USUAL_FIELD_COST};
 		}
 	}
 
@@ -68,7 +72,7 @@ function drawMan() {
 
 	ctx.fillStyle = "#FACE8D";
 
-	ctx.fillRect(x,y,CELL_SIZE,CELL_SIZE);
+	ctx.fillRect(x + 5, y + 5, CELL_SIZE - 10, CELL_SIZE - 10);
 }
 
 function drawSeeds() {
@@ -78,7 +82,7 @@ function drawSeeds() {
 
 		ctx.fillStyle = "#00CC00";
 
-		ctx.fillRect(x,y,CELL_SIZE,CELL_SIZE);
+		ctx.fillRect(x + 5, y + 5, CELL_SIZE - 10, CELL_SIZE - 10);
 	});
 }
 
@@ -114,14 +118,14 @@ function spawnSwamps() {
 
 		swamps.push(swamp);
 
-		field[swamp.x][swamp.y].cost = 10;
+		field[swamp.x][swamp.y].cost = SWAMP_FIELD_COST;
 	}
 }
 
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
-        if (this[i] === obj) {
+        if (this[i].x == obj.x && this[i].y == obj.y) {
             return true;
         }
     }

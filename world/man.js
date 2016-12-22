@@ -1,7 +1,12 @@
 function man(x,y) {
 	this.x = x;
 	this.y = y;
+	this.lastx = 0;
+	this.lasty = 0;
+	this.stepsRemaining = 0;
 	this.path = [];
+	this.moving = false;
+	this.destination = {};
 	this.findPath = function findPath(targets) {
 
 		var globalMinimumDistance = 200000000;
@@ -85,11 +90,32 @@ function man(x,y) {
 	}
 
 	this.move = function() {
-		if(this.path.length != 0) {
-			this.x = this.path[0].x;
-			this.y = this.path[0].y;
+		if(!this.moving) {
+			if(this.path.length != 0) {
+				this.destination = this.path[0];
+				this.path.splice(0,1);
 
-			this.path.splice(0,1);
+				this.stepsRemaining = this.destination.cost;
+
+				this.lastx = this.x;
+				this.lasty = this.y;
+
+				this.moving = true;
+			}
 		}
+		
+		this.x += (this.destination.x - this.lastx)/this.destination.cost;
+		this.y += (this.destination.y - this.lasty)/this.destination.cost;
+
+		this.stepsRemaining--;
+
+		if(this.stepsRemaining == 0) {
+			
+			this.x = this.destination.x;
+			this.y = this.destination.y;
+
+			this.moving = false;
+		}
+
 	}
 }
