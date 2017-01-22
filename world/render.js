@@ -7,12 +7,14 @@ function render() {
 }
 
 function drawMan() {
-	var x = man.x * CELL_SIZE;
-	var y = man.y * CELL_SIZE;
+	men.forEach(function(man) {
+		var x = man.x * CELL_SIZE;
+		var y = man.y * CELL_SIZE;
 
-	ctx.fillStyle = "#FACE8D";
+		ctx.fillStyle = "#FACE8D";
 
-	ctx.fillRect(x + 5, y + 5, CELL_SIZE - 10, CELL_SIZE - 10);
+		ctx.fillRect(x + 5, y + 5, CELL_SIZE - 10, CELL_SIZE - 10);
+	});
 }
 
 function drawSeeds() {

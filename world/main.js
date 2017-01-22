@@ -14,7 +14,7 @@ var canvas;
 var ctx;
 var field = [];
 var swamps = [];
-var man;
+var men = [];
 var seeds = [];
 
 $(document).ready(function() {
@@ -25,14 +25,22 @@ $(document).ready(function() {
 
 function update() {
 
-	man.move();
+	men.forEach(function(man) {
+		man.move();
+	});
 
 	for(var i = 0; i < seeds.length; i++) {
-		if(seeds[i].x == man.x && seeds[i].y == man.y) {
-			seeds.splice(i, 1);
-			spawnNewSeed();
-			man.findPath(seeds);
-			break;
+		for(var j = 0; j < men.length; j++) {
+			if(seeds[i].x == men[j].x && seeds[i].y == men[j].y) {
+				seeds.splice(i, 1);
+				spawnNewSeed();
+
+				men.forEach(function(man) {
+					man.find = true;
+				});
+
+				break;
+			}
 		}
 	};
 

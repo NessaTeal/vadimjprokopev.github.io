@@ -1,4 +1,4 @@
-function man(x,y) {
+function man(x,y,method) {
 	this.x = x;
 	this.y = y;
 	this.lastx = 0;
@@ -7,18 +7,20 @@ function man(x,y) {
 	this.path = [];
 	this.moving = false;
 	this.destination = {};
-	this.findPath = function findPath(targets) {
+	this.find = true;
+	this.method = method;
+	this.findPath = function findPath() {
 
 		var globalMinimumDistance = Number.MAX_SAFE_INTEGER;
 
-		for(var k = 0; k < targets.length; k++) {
+		for(var k = 0; k < seeds.length; k++) {
 			var unvisited = $.extend(true, [], field);
 
 			unvisited[this.x][this.y].distance = 0;
 
 			var current = unvisited[this.x][this.y];
 
-			while(current.x != targets[k].x || current.y != targets[k].y) {
+			while(current.x != seeds[k].x || current.y != seeds[k].y) {
 
 				if(current.y < FIELD_HEIGHT / CELL_SIZE - 1
 					&& (unvisited[current.x][current.y + 1].distance === undefined
@@ -73,9 +75,9 @@ function man(x,y) {
 
 			var path = [current];
 
-			if(unvisited[targets[k].x][targets[k].y].distance < globalMinimumDistance) {
+			if(unvisited[seeds[k].x][seeds[k].y].distance < globalMinimumDistance) {
 
-				globalMinimumDistance = unvisited[targets[k].x][targets[k].y].distance;
+				globalMinimumDistance = unvisited[seeds[k].x][seeds[k].y].distance;
 
 				while(current.previous !== undefined) {
 					path.unshift(current.previous);
@@ -91,6 +93,11 @@ function man(x,y) {
 
 	this.move = function() {
 		if(!this.moving) {
+			if(find) {
+				this.findPath();
+				this.find = false;
+			}
+
 			if(this.path.length != 0) {
 				this.destination = this.path[0];
 				this.path.splice(0,1);

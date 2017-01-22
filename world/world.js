@@ -6,7 +6,7 @@ function createWorld() {
 		}
 	}
 
-	man = new man(1, 1);
+	men = [new man(1, 1, true)];
 
 	for(var i = 0; i < SEEDS_AMOUNT; i++) {
 		spawnNewSeed();
@@ -19,8 +19,6 @@ function createWorld() {
 	canvas.height = FIELD_HEIGHT;
 
 	ctx = canvas.getContext("2d");
-
-	man.findPath(seeds);
 }
 
 function spawnNewSeed() {

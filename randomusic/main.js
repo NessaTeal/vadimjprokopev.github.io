@@ -1,5 +1,5 @@
-var frequencies = [523.25/2, 587.33/2, 659.26/2, 698.46/2, 783.99/2, 880/2, 987.77/2, 523.25, 587.33, 659.26, 698.46, 783.99, 880, 987.77];
-var indexes = [7, 8, 10];
+var frequencies = [523.25, 587.33, 659.26, 698.46, 783.99, 880, 987.77];
+var indexes = [0, 1, 3];
 
 var audioCtx = new window.AudioContext;
 
@@ -78,10 +78,10 @@ function changeNote() {
 		}
 	}
 	else {
-		if(indexes[2] == 13) {
-			if(indexes[1] != 12) {
-				oscillator3.frequency.value = frequencies[12];
-				indexes[2] = 12;
+		if(indexes[2] == 6) {
+			if(indexes[1] != 5) {
+				oscillator3.frequency.value = frequencies[5];
+				indexes[2] = 5;
 			}
 			else {
 				changeNote();
