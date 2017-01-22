@@ -1,4 +1,4 @@
-var net = new WebTCP('82.197.9.169', 9999)
+var net = new WebTCP('localhost', 9999)
 
 var options = {
   encoding: "utf-8",
