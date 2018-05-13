@@ -1,0 +1,145 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      Vue.component('card', {
+        props: ['rarity', 'quantity', 'probability'],
+        template: '<li>{{ rarity }} - {{ quantity }}. Probability: {{ probability }}</li>'
+      })
+    </script>
+  </head>
+  <body>
+    <div id="main">
+      <p>Money: {{ money }}</p>
+      <button v-on:click="openPack">Open pack: price {{ packCost }}</button>
+      <button v-on:click="increaseProbability">Increase probability: price {{ probabilityCost }}</button>
+      <button v-on:click="increaseRarity" v-if="canIncreaseRarity">Increase max rarity (once)</button>
+      <div>
+        <ul>
+          <card
+          v-for="card in cards"
+          v-bind:rarity="card.rarity"
+          v-bind:quantity="card.quantity"
+          v-bind:probability="card.probability"
+          v-bind:key="card.id"></card>
+        </ul>
+      </div>
+    </div>
+    <script>
+      var vue = new Vue({
+        el: "#main",
+        data: {
+          money: 100,
+          maxRarity: 3,
+          probabilityFactor: 6,
+          probabilityCost: 1000,
+          packCost: 100,
+          canIncreaseRarity: true,
+          cards: [
+            {
+              id: 0,
+              rarity: "Common",
+              quantity: 0,
+              income: 1,
+              probability: 0
+            }, {
+              id: 1,
+              rarity: "Rare",
+              quantity: 0,
+              income: 5,
+              probability: 0
+            }, {
+              id: 2,
+              rarity: "Epic",
+              quantity: 0,
+              income: 20,
+              probability: 0
+            }
+          ]
+        },
+        methods: {
+          getRandomRarityIndex: function() {
+            var rand = Math.random();
+            var cumulativeProbability = 0;
+            for(var i = 0; i < this.maxRarity - 1; i++) {
+              cumulativeProbability += this.cards[i].probability;
+
+              if(rand <= cumulativeProbability) {
+                return i;
+              }
+            }
+
+            return this.maxRarity;
+          },
+          openPack: function() {
+            if(this.money < this.packCost) {
+              return;
+            }
+
+            this.money -= this.packCost;
+            this.packCost = Math.round(this.packCost * 1.07);
+
+            var cardsGet = {};
+
+            for(var i = 0; i < 5; i++) {
+              var index = this.getRandomRarityIndex();
+              if(cardsGet.index === undefined) {
+                cardsGet.index = 1;
+              } else {
+                cardsGet.index++;
+              }
+              this.cards[index].quantity++;
+            }
+          },
+          openPacks: function() {
+            for(var i = 0; i < 100; i++) {
+              this.openPack();
+            }
+          },
+          increaseProbability: function() {
+            if(this.money < this.probabilityCost) {
+              return;
+            }
+
+            this.money -= this.probabilityCost;
+            this.probabilityCost = Math.round(this.probabilityCost * 1.5);
+
+            this.probabilityFactor /= 1.04;
+            this.updateProbabilites();
+          },
+          increaseRarity: function() {
+            this.cards.push({id: this.maxRarity, quantity: 0, income: 100, rarity: "Legendary", probability: 0})
+            this.maxRarity++;
+            this.updateProbabilites();
+            this.canIncreaseRarity = false;
+          },
+          tick: function() {
+            this.cards.map((x) => this.money += x.income * x.quantity);
+          },
+          updateProbabilites: function() {
+            var total = (this.maxRarity ** (this.probabilityFactor + 1)) / (this.probabilityFactor + 1);
+
+            var integrals = [];
+
+            for(var i = 0; i < this.maxRarity; i++) {
+              integrals.push((this.maxRarity - i) ** (this.probabilityFactor + 1) / (this.probabilityFactor + 1))
+            }
+
+            integrals.push(0);
+
+            console.log(integrals);
+                        console.log(total);
+
+            for(var i = 0; i < this.maxRarity; i++) {
+              this.cards[i].probability = (integrals[i] - integrals[i + 1]) / total;
+            }
+          }
+        },
+        created: function() {
+          this.updateProbabilites();
+          setInterval(this.tick, 700);
+        }
+      })
+    </script>
+  </body>
+</html>
